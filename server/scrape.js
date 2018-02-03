@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const passwords = require('../config/passwords')
 
-let scrape = async (title) => {
+let scrapeNetflix = async (title) => {
   const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
 
@@ -30,6 +30,32 @@ let scrape = async (title) => {
   return title.toUpperCase() === result.toUpperCase();
 };
 
-scrape('Naruto').then((value) => {
-  console.log(value);
-});
+let scrapeHulu = async (title) => {
+  const browser = await puppeteer.launch({headless: false});
+  const page = await browser.newPage();
+
+  await page.goto(`https://www.hulu.com/search?q=${title}`);
+  await page.waitForSelector('#serp-promo > div > div.promo-desc > div.promo-middle > div > a');
+  const result = await page.evaluate(() => {
+    return document.querySelector('#serp-promo > div > div.promo-desc > div.promo-middle > div > a').innerText;
+  });
+
+  browser.close();
+
+  return title.toUpperCase() === result.toUpperCase();
+};
+
+let scrapeAmazonPrimeVideo = async (title) => {
+  const browser = await puppeteer.launch({headless: false});
+  const page = await browser.newPage();
+
+  await page.goto(`https://www.amazon.com/s/ref=nb_sb_noss_1/136-6058734-2156620?url=search-alias%3Dprime-instant-video&field-keywords=${title}`);
+  await page.waitForSelector('#result_0 > div > div > div > div > div.a-fixed-left-grid-col.a-col-right > div.a-row.a-spacing-small.s-padding-right-small > h2 > a');
+  const result = await page.evaluate(() => {
+    return document.querySelector('#result_0 > div > div > div > div > div.a-fixed-left-grid-col.a-col-right > div.a-row.a-spacing-small.s-padding-right-small > h2 > a').innerText;
+  });
+
+  browser.close();
+
+  return title.toUpperCase() === result.toUpperCase();
+};
