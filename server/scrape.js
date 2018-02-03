@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const passwords = require('../config/passwords')
 
 let scrapeNetflix = async (title) => {
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   await page.goto('https://www.netflix.com/login');
@@ -31,7 +31,7 @@ let scrapeNetflix = async (title) => {
 };
 
 let scrapeHulu = async (title) => {
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   await page.goto(`https://www.hulu.com/search?q=${title}`);
@@ -46,7 +46,7 @@ let scrapeHulu = async (title) => {
 };
 
 let scrapeAmazonPrimeVideo = async (title) => {
-  const browser = await puppeteer.launch({headless: false});
+  const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
   await page.goto(`https://www.amazon.com/s/ref=nb_sb_noss_1/136-6058734-2156620?url=search-alias%3Dprime-instant-video&field-keywords=${title}`);
