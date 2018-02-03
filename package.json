@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/wellsinator/getflix#readme",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "puppeteer": "^1.0.0"
   }
 }
