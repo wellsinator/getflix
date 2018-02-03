@@ -1,0 +1,24 @@
+{
+  "name": "getflix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wellsinator/getflix.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wellsinator/getflix/issues"
+  },
+  "homepage": "https://github.com/wellsinator/getflix#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
