@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const passwords = require('../config/passwords')
 
-let scrapeNetflix = async (title) => {
+let netflix = async (title) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -30,7 +30,7 @@ let scrapeNetflix = async (title) => {
   return title.toUpperCase() === result.toUpperCase();
 };
 
-let scrapeHulu = async (title) => {
+let hulu = async (title) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -45,7 +45,7 @@ let scrapeHulu = async (title) => {
   return title.toUpperCase() === result.toUpperCase();
 };
 
-let scrapeAmazonPrimeVideo = async (title) => {
+let amazon = async (title) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -59,3 +59,5 @@ let scrapeAmazonPrimeVideo = async (title) => {
 
   return title.toUpperCase() === result.toUpperCase();
 };
+
+exports.hulu = hulu;

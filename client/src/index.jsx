@@ -3,17 +3,44 @@ import ReactDOM from 'react-dom';
 import styles from './styles.css';
 import Search from './components/Search.jsx';
 import Providers from './components/Providers.jsx';
+import axios from 'axios';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-  }
 
-  componentDidMount() {
+    this.state = {
+      providers: {
+        hulu: {
+          loading: null,
+          found: null
+        }
+      }
+    }
   }
 
   search = (title) => {
-    console.log(title);
+    this.setState({
+      providers: {
+        hulu: {
+          loading: 'loading'
+        }
+      }
+    });
+
+    axios.get(`http://localhost:3000/search/hulu/${title}`)
+      .then(res => {
+        const found = res.data ? 'found' : 'notFound';
+
+        this.setState({
+          providers: {
+            hulu: {
+              loading: null,
+              found
+            }
+          }
+        });
+      });
   }
 
   render () {
@@ -21,7 +48,7 @@ class App extends React.Component {
       <div>
         <h1>Getflix</h1>
         <Search search={this.search}/>
-        <Providers/>
+        <Providers providers={this.state.providers}/>
       </div>
     )
   }

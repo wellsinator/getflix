@@ -29,6 +29,7 @@
     "webpack": "^2.2.1"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "express": "^4.16.2",
     "puppeteer": "^1.0.0",
     "react": "^16.2.0",
