@@ -6,12 +6,13 @@ class Providers extends React.Component {
   }
 
   render() {
-    const { hulu } = this.props.providers;
+    const { netflix, hulu } = this.props.providers;
+    const netflixClasses = `${netflix.loading} ${netflix.found}`;
     const huluClasses = `${hulu.loading} ${hulu.found}`;
 
     return (
       <div>
-        {/* <img src="https://i.imgur.com/jYCdI9h.jpg"/> */}
+        <img className={netflixClasses} src="https://i.imgur.com/jYCdI9h.jpg"/>
         <img className={huluClasses} src="https://i.imgur.com/uae3pux.jpg"/>
         {/* <img src="https://i.imgur.com/zj0SXAK.jpg"/> */}
       </div>

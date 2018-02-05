@@ -20,9 +20,11 @@ let netflix = async (title) => {
   await page.waitForSelector('.searchBox');
   await page.type('.searchBox', title);
 
-  await page.waitForSelector('#title-card-0-0 > div > div > div');
+  await page.waitFor(250);
   const result = await page.evaluate(() => {
-    return document.querySelector('#title-card-0-0 > div > div > div').innerText;
+    const anchor = document.querySelector('#title-card-0-0 > div > div > div');
+
+    return anchor ? anchor.innerText : 'notfound';
   });
 
   browser.close();
@@ -36,15 +38,15 @@ let hulu = async (title) => {
 
   await page.goto(`https://www.hulu.com/search?q=${title}`);
   await page.waitForSelector('#banner > div.extra-header-wrapper > div.filter-bar.page-width > div.left-side > table > tbody > tr > td:nth-child(3) > div > div > a.btn.active');
-  const query = await page.evaluate(() => {
-    return document.querySelector('#serp-promo > div > div.promo-desc > div.promo-middle > div > a');
+  const result = await page.evaluate(() => {
+    const anchor = document.querySelector('.promo-middle .promo-title-link');
+
+    return anchor ? anchor.innerText : 'notfound';
   });
 
   browser.close();
 
-  if (!query) { return false; }
-
-  return title.toUpperCase() === query.innerText.toUpperCase();
+  return title.toUpperCase() === result.toUpperCase();
 };
 
 let amazon = async (title) => {
@@ -62,4 +64,6 @@ let amazon = async (title) => {
   return title.toUpperCase() === result.toUpperCase();
 };
 
+exports.netflix = netflix;
 exports.hulu = hulu;
+exports.amazon = amazon;
