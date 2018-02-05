@@ -35,14 +35,16 @@ let hulu = async (title) => {
   const page = await browser.newPage();
 
   await page.goto(`https://www.hulu.com/search?q=${title}`);
-  await page.waitForSelector('#serp-promo > div > div.promo-desc > div.promo-middle > div > a');
-  const result = await page.evaluate(() => {
-    return document.querySelector('#serp-promo > div > div.promo-desc > div.promo-middle > div > a').innerText;
+  await page.waitForSelector('#banner > div.extra-header-wrapper > div.filter-bar.page-width > div.left-side > table > tbody > tr > td:nth-child(3) > div > div > a.btn.active');
+  const query = await page.evaluate(() => {
+    return document.querySelector('#serp-promo > div > div.promo-desc > div.promo-middle > div > a');
   });
 
   browser.close();
 
-  return title.toUpperCase() === result.toUpperCase();
+  if (!query) { return false; }
+
+  return title.toUpperCase() === query.innerText.toUpperCase();
 };
 
 let amazon = async (title) => {
