@@ -11,19 +11,20 @@ class App extends React.Component {
 
     this.state = {
       netflix: { loading: null, found: null },
-      hulu: { loading: null, found: null }
+      hulu: { loading: null, found: null },
+      amazon: { loading: null, found: null },
     }
   }
 
   search = (title) => {
     this.setState({
       netflix: { loading: 'loading' },
-      hulu: { loading: 'loading' }
+      hulu: { loading: 'loading' },
+      amazon: { loading: 'loading' },
     });
     this.searchProvider('hulu', title);
     this.searchProvider('netflix', title);
-
-  //   this.searchProvider('amazon', title);
+    this.searchProvider('amazon', title);
   }
 
   searchProvider = (provider, title) => {

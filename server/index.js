@@ -10,7 +10,7 @@ app.get('/search/:provider/:title', (req, res) => {
 
   scrape[provider](title)
     .then(found => res.send(found))
-    .catch(err => console.log(err));
+    .catch(err => res.sendStatus(400));
 });
 
 app.listen(3000, () => console.log('Example app listening on port 3000!'));
