@@ -9,37 +9,29 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      providers: {
-        hulu: {
-          loading: null,
-          found: null
-        }
-      }
-    }
+    this.state = { providers: {
+      hulu: { loading: null, found: null }
+    }}
   }
 
   search = (title) => {
-    this.setState({
-      providers: {
-        hulu: {
-          loading: 'loading'
-        }
-      }
-    });
+    this.searchProvider('hulu', title);
+  //   this.searchProvider('netflix', title);
+  //   this.searchProvider('amazon', title);
+  }
 
-    axios.get(`http://localhost:3000/search/hulu/${title}`)
+  searchProvider = (provider, title) => {
+    this.setState({ providers: {
+      [provider]: { loading: 'loading' }
+    }});
+
+    axios.get(`http://localhost:3000/search/${provider}/${title}`)
       .then(res => {
         const found = res.data ? 'found' : 'notFound';
 
-        this.setState({
-          providers: {
-            hulu: {
-              loading: null,
-              found
-            }
-          }
-        });
+        this.setState({ providers: {
+          [provider]: { loading: null, found }
+        }});
       });
   }
 
