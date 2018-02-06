@@ -1,15 +1,16 @@
 const puppeteer = require('puppeteer');
 const passwords = require('../config/passwords')
+const axios = require('axios');
 
-let netflix = async (title) => {
-  const browser = await puppeteer.launch();
+exports.netflix = async (title) => {
+  const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
 
   await page.goto('https://www.netflix.com/login');
 
   await page.waitForSelector('#email');
-  await page.type('#email', 'alexjohnwells@gmail.com');
-  await page.type('#password', passwords.NETFLIX);
+  await page.type('#email', 'alexjohnwells@gmail.com', { delay: 100 });
+  await page.type('#password', passwords.NETFLIX, { delay: 100 });
   await page.click('.login-button');
 
   await page.waitForNavigation();
@@ -18,7 +19,7 @@ let netflix = async (title) => {
   await page.waitForSelector('.icon-search');
   await page.click('.icon-search');
   await page.waitForSelector('.searchBox');
-  await page.type('.searchBox', title);
+  await page.type('.searchBox', title, { delay: 100 });
 
   await page.waitFor(250);
   const result = await page.evaluate(() => {
@@ -32,7 +33,7 @@ let netflix = async (title) => {
   return title.toUpperCase() === result.toUpperCase();
 };
 
-let hulu = async (title) => {
+exports.hulu = async (title) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
 
@@ -49,12 +50,12 @@ let hulu = async (title) => {
   return title.toUpperCase() === result.toUpperCase();
 };
 
-let amazon = async (title) => {
-  const browser = await puppeteer.launch();
+exports.amazon = async (title) => {
+  const browser = await puppeteer.launch({headless: false});
   const page = await browser.newPage();
 
   await page.goto(`https://www.amazon.com/s/ref=nb_sb_noss_1/136-6058734-2156620?url=search-alias%3Dprime-instant-video&field-keywords=${title}`);
-  await page.waitForSelector('#result_0 .s-access-detail-page');
+  await page.waitFor(1000);
   const result = await page.evaluate(() => {
     const anchor = document.querySelector('#result_0 .s-access-detail-page');
 
@@ -66,6 +67,29 @@ let amazon = async (title) => {
   return title.toUpperCase() === result.toUpperCase();
 };
 
-exports.netflix = netflix;
-exports.hulu = hulu;
-exports.amazon = amazon;
+exports.itunes = async (title) => {
+  const foundMovie = await itunesSearch(title, 'movie');
+  const foundShow = await itunesSearch(title, 'tvShow');
+
+  return foundMovie || foundShow;
+};
+
+const itunesSearch = async (term, media) => {
+  const url = `https://itunes.apple.com/search?`;
+  const query = { term, media };
+  const promise = await axios(generateURL(url, query));
+  const results = promise.data.results;
+  const result = results.length ? results[0].trackName : 'notFound';
+
+  return result.toUpperCase() === term.toUpperCase();
+};
+
+function generateURL(baseURL, options) {
+  let optionsString = Object.keys(options).map(item => {
+    return item + '=' + encodeURIComponent(options[item])
+  }).join('&');
+
+  optionsString = optionsString.replace(/%20/g, '+');
+    
+  return baseURL + optionsString;
+}

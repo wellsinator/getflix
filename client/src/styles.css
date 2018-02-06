@@ -15,3 +15,7 @@ img {
 .notFound {
   border: 2px solid red;
 }
+
+.error {
+  border: 2px solid orange;
+};

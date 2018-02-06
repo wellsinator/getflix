@@ -13,18 +13,22 @@ class App extends React.Component {
       netflix: { loading: null, found: null },
       hulu: { loading: null, found: null },
       amazon: { loading: null, found: null },
+      itunes: { loading: null, found: null },
     }
   }
 
   search = (title) => {
     this.setState({
-      netflix: { loading: 'loading' },
+      // netflix: { loading: 'loading' },
       hulu: { loading: 'loading' },
-      amazon: { loading: 'loading' },
+      // amazon: { loading: 'loading' },
+      itunes: { loading: 'loading' },
     });
+
+    // this.searchProvider('netflix', title);
     this.searchProvider('hulu', title);
-    this.searchProvider('netflix', title);
-    this.searchProvider('amazon', title);
+    // this.searchProvider('amazon', title);
+    this.searchProvider('itunes', title);
   }
 
   searchProvider = (provider, title) => {
@@ -33,6 +37,9 @@ class App extends React.Component {
         const found = res.data ? 'found' : 'notFound';
 
         this.setState({ [provider]: { loading: null, found } });
+      })
+      .catch(err => {
+        this.setState({ [provider]: { loading: null, found: 'error' } });
       });
   }
 
