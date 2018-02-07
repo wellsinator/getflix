@@ -6,7 +6,7 @@ class Providers extends React.Component {
   }
 
   render() {
-    const { netflix, hulu, amazon, itunes } = this.props.providers;
+    const { netflix, hulu, amazon, itunes, youtube, googlePlay } = this.props.providers;
 
     return (
       <div>
@@ -14,6 +14,8 @@ class Providers extends React.Component {
         <img className={`${hulu.loading} ${hulu.found}`} src="https://i.imgur.com/uae3pux.jpg"/>
         <img className={`${amazon.loading} ${amazon.found}`} src="https://i.imgur.com/zj0SXAK.jpg"/>
         <img className={`${itunes.loading} ${itunes.found}`} src="https://i.imgur.com/55nfj1T.png"/>
+        <img className={`${youtube.loading} ${youtube.found}`} src="https://i.imgur.com/tH7Ng79.png"/>
+        <img className={`${googlePlay.loading} ${googlePlay.found}`} src="https://i.imgur.com/D6Vcejk.png"/>
       </div>
     ) 
   }

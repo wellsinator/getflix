@@ -14,6 +14,8 @@ class App extends React.Component {
       hulu: { loading: null, found: null },
       amazon: { loading: null, found: null },
       itunes: { loading: null, found: null },
+      youtube: { loading: null, found: null },
+      googlePlay: { loading: null, found: null },
     }
   }
 
@@ -23,12 +25,16 @@ class App extends React.Component {
       hulu: { loading: 'loading' },
       // amazon: { loading: 'loading' },
       itunes: { loading: 'loading' },
+      youtube: { loading: 'loading' },
+      googlePlay: { loading: 'loading' },
     });
 
     // this.searchProvider('netflix', title);
     this.searchProvider('hulu', title);
     // this.searchProvider('amazon', title);
     this.searchProvider('itunes', title);
+    this.searchProvider('youtube', title);
+    this.searchProvider('googlePlay', title);
   }
 
   searchProvider = (provider, title) => {

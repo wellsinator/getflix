@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const passwords = require('../config/passwords')
+const config = require('../config');
 const axios = require('axios');
 
 exports.netflix = async (title) => {
@@ -10,7 +10,7 @@ exports.netflix = async (title) => {
 
   await page.waitForSelector('#email');
   await page.type('#email', 'alexjohnwells@gmail.com', { delay: 100 });
-  await page.type('#password', passwords.NETFLIX, { delay: 100 });
+  await page.type('#password', config.netflixPassword, { delay: 100 });
   await page.click('.login-button');
 
   await page.waitForNavigation();
@@ -93,3 +93,42 @@ function generateURL(baseURL, options) {
     
   return baseURL + optionsString;
 }
+
+exports.youtube = async (title) => {
+  const baseUrl = 'https://www.googleapis.com/youtube/v3/search?';
+  const query = {
+    q: title,
+    type: 'video',
+    part: 'snippet',
+    videoType: 'movie',
+    key: config.youtubeApiKey,
+  };
+  const promise = await axios(generateURL(baseUrl, query));
+  const uppercaseResults = promise.data.items.map(item => item.snippet.title.toUpperCase());
+
+  return uppercaseResults.includes(title.toUpperCase());
+};
+
+exports.googlePlay = async (title) => {
+  const browser = await puppeteer.launch({headless: false});
+  const page = await browser.newPage();
+
+  await page.goto(`https://play.google.com/store/search?q=${title}&c=movies`);
+  await page.waitFor(1000);
+  const result = await page.evaluate(() => {
+    const anchor1 = document.querySelector('#body-content > div.outer-container > div > div.main-content > div > div:nth-child(1) > div > div > div > div > div:nth-child(3) > a');
+    const anchor2 = document.querySelector('#body-content > div.outer-container > div > div.main-content > div > div:nth-child(1) > div > div.id-card-list.card-list.two-cards > div:nth-child(1) > div > div.details > a.title');
+    
+    if (anchor1) {
+      return anchor1.innerText;
+    } else if (anchor2) {
+      return anchor2.innerText;
+    } else {
+      return 'notFound';
+    }
+  });
+
+  browser.close();
+
+  return title.toUpperCase() === result.toUpperCase();
+};
