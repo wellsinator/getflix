@@ -1,5 +1,4 @@
 const search = require('./search');
-const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
